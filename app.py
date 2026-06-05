@@ -64,9 +64,43 @@ def predict_and_explain(image):
     return species, f"{confidence * 100:.0f}%", shap_image
 
 
-st.title("Nest Best Thing (Explainable AI)")
+st.set_page_config(page_title="Nest Best Thing", layout="wide")
 
-uploaded_file = st.file_uploader("Upload Egg Image", type=["jpg", "png", "jpeg"])
+st.title("🪺 Nest Best Thing (Explainable AI)")
+
+st.markdown(
+"""
+This tool helps identify bird egg species using AI.
+
+Upload an egg image to get:
+- 🧠 Species prediction  
+- 📊 Confidence score  
+- 🔍 SHAP explanation  
+"""
+)
+
+st.divider()
+
+# Layout with columns
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.subheader("📤 Upload Egg Image")
+    uploaded_file = st.file_uploader(
+        "Choose an image",
+        type=["jpg", "png", "jpeg"],
+        help="Use a clear image with minimal background"
+    )
+
+with col2:
+    st.subheader("ℹ️ Supported Scope")
+    st.markdown("""
+    - Model supports **21 bird species**
+    - Best results with:
+        - Good lighting  
+        - Centered egg  
+        - Minimal shadows  
+    """)
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
