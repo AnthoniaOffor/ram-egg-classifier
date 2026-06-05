@@ -80,65 +80,62 @@ Upload an egg image to get:
 )
 
 st.divider()
+tab1, tab2 = st.tabs(["📷 Egg Classification", "🤖 RAG Chatbot"])
 
 # Layout with columns
-col1, col2 = st.columns([1, 1])
+with tab1:
 
-with col1:
-    st.subheader("📤 Upload Egg Image")
-    uploaded_file = st.file_uploader(
-        "Choose an image",
-        type=["jpg", "png", "jpeg"],
-        help="Use a clear image with minimal background"
-    )
+    col1, col2 = st.columns([1, 1])
 
-with col2:
-    st.subheader("ℹ️ Supported Scope")
-    st.markdown("""
-    - Model supports **21 bird species**
-    - Best results with:
-        - Good lighting  
-        - Centered egg  
-        - Minimal shadows  
-    """)
+    with col1:
+        st.subheader("📤 Upload Egg Image")
+        uploaded_file = st.file_uploader(
+            "Choose an image",
+            type=["jpg", "png", "jpeg"]
+        )
 
-if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("RGB")
-    image_np = np.array(image)
+    with col2:
+        st.subheader("ℹ️ Supported Scope")
+        st.markdown("""
+        - Model supports **21 bird species**
+        """)
 
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file).convert("RGB")
+        image_np = np.array(image)
 
-    species, confidence, shap_image = predict_and_explain(image_np)
+        st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    st.write(f"**Predicted Species:** {species}")
-    st.write(f"**Confidence:** {confidence}")
+        species, confidence, shap_image = predict_and_explain(image_np)
 
-    if shap_image:
-        st.image(shap_image, caption="SHAP Explanation")
+        st.success(f"**Predicted Species:** {species}")
+        st.info(f"**Confidence:** {confidence}")
+
+        if shap_image:
+            st.image(shap_image, caption="SHAP Explanation")
 
 
-st.divider()
-st.header("📚 IBIS Assistant (RAG Chatbot)")
 
-# Initialize chat history
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+with tab2:
 
-# User input
-user_input = st.text_input("Ask a question about the eggs or species")
+    st.header("📚 IBIS Assistant")
 
-if user_input:
-    answer = rag_chatbot(user_input)
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
-    # Save chat history
-    st.session_state.chat_history.append(("You", user_input))
-    st.session_state.chat_history.append(("IBIS", answer))
+    user_input = st.text_input("Ask a question")
 
-# Display chat history
-for role, text in st.session_state.chat_history:
-    if role == "You":
-        st.markdown(f"**🧑 You:** {text}")
-    else:
-        st.markdown(f"**🤖 IBIS:** {text}")
+    if user_input:
+        answer = rag_chatbot(user_input)
+
+        st.session_state.chat_history.append(("You", user_input))
+        st.session_state.chat_history.append(("IBIS", answer))
+
+    for role, text in st.session_state.chat_history:
+        if role == "You":
+            st.markdown(f"**🧑 You:** {text}")
+        else:
+            st.markdown(f"**🤖 IBIS:** {text}")
+
 
 
