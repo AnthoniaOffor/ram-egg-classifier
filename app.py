@@ -1,5 +1,5 @@
 import os
-os.environ["STREAMLIT_SERVER_FILE_WATCH
+os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
 import cv2
 import numpy as np
 import torch
