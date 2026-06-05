@@ -1,7 +1,8 @@
-rag_module_code = r'''
+
 import re
 import torch
 from sentence_transformers import SentenceTransformer, util
+
 
 # ----------------------------
 # Knowledge base documents
@@ -202,9 +203,6 @@ def rag_chatbot_with_sources(query):
         context_text += f"{i}. (score={score:.3f}) {doc}\n\n"
 
     return answer, context_text
-'''
 
-with open("rag_module.py", "w", encoding="utf-8") as f:
-    f.write(rag_module_code)
 
-print("rag_module.py saved successfully.")
+
