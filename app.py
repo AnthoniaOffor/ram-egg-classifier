@@ -1,6 +1,6 @@
 from rag_module import rag_chatbot
 import os
-os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
+os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "poll"
 import cv2
 import streamlit as st
 import numpy as np
