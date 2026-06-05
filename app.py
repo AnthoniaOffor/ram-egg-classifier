@@ -66,7 +66,7 @@ def predict_and_explain(image):
 
 st.set_page_config(page_title="Nest Best Thing", layout="wide")
 
-st.title("🪺 Nest Best Thing (Explainable AI)")
+st.title("🪺 Nest Best Thing ")
 
 st.markdown(
 """
