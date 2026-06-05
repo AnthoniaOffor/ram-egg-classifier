@@ -83,12 +83,28 @@ if uploaded_file is not None:
         st.image(shap_image, caption="SHAP Explanation")
 
 
-st.subheader("Test RAG (Debug)")
+st.divider()
+st.header("📚 IBIS Assistant (RAG Chatbot)")
 
-query = st.text_input("Ask a question")
+# Initialize chat history
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-if query:
-    answer = rag_chatbot(query)
-    st.write(answer)
+# User input
+user_input = st.text_input("Ask a question about the eggs or species")
+
+if user_input:
+    answer = rag_chatbot(user_input)
+
+    # Save chat history
+    st.session_state.chat_history.append(("You", user_input))
+    st.session_state.chat_history.append(("IBIS", answer))
+
+# Display chat history
+for role, text in st.session_state.chat_history:
+    if role == "You":
+        st.markdown(f"**🧑 You:** {text}")
+    else:
+        st.markdown(f"**🤖 IBIS:** {text}")
 
 
