@@ -82,7 +82,14 @@ Upload an egg image to get:
 st.divider()
 tab1, tab2 = st.tabs(["📷 Egg Classification", "🤖 RAG Chatbot"])
 
-# Layout with columns
+if st.button("🔄 Reset App"):
+    st.session_state.clear()
+    st.rerun()
+
+
+# ----------------------------
+# TAB 1: CLASSIFICATION
+# ----------------------------
 with tab1:
 
     col1, col2 = st.columns([1, 1])
@@ -100,22 +107,31 @@ with tab1:
         - Model supports **21 bird species**
         """)
 
+    # ✅ MOVE THIS INSIDE TAB
     if uploaded_file is not None:
+
         image = Image.open(uploaded_file).convert("RGB")
         image_np = np.array(image)
 
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.caption("Supported formats: JPG, PNG • Max size ~5MB recommended")
 
-        species, confidence, shap_image = predict_and_explain(image_np)
+        st.subheader("📸 Uploaded Image")
+        st.image(image, use_column_width=True)
 
-        st.success(f"**Predicted Species:** {species}")
-        st.info(f"**Confidence:** {confidence}")
+        if st.button("🔍 Analyze Egg"):
+            with st.spinner("Analyzing egg..."):
+                species, confidence, shap_image = predict_and_explain(image_np)
 
-        if shap_image:
-            st.image(shap_image, caption="SHAP Explanation")
+            st.success(f"**Predicted Species:** {species}")
+            st.info(f"**Confidence:** {confidence}")
+
+            if shap_image:
+                st.image(shap_image, caption="SHAP Explanation")
 
 
-
+# ----------------------------
+# TAB 2: CHATBOT
+# ----------------------------
 with tab2:
 
     st.header("📚 IBIS Assistant")
@@ -126,7 +142,8 @@ with tab2:
     user_input = st.text_input("Ask a question")
 
     if user_input:
-        answer = rag_chatbot(user_input)
+        with st.spinner("Thinking..."):
+            answer = rag_chatbot(user_input)
 
         st.session_state.chat_history.append(("You", user_input))
         st.session_state.chat_history.append(("IBIS", answer))
@@ -136,6 +153,4 @@ with tab2:
             st.markdown(f"**🧑 You:** {text}")
         else:
             st.markdown(f"**🤖 IBIS:** {text}")
-
-
-
+``
