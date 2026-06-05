@@ -47,7 +47,7 @@ def predict_and_explain(image):
 
     masker = shap.maskers.Image("inpaint_telea", egg.shape)
     explainer = shap.Explainer(yolo_score, masker)
-    shap_values = explainer(egg[np.newaxis, ...], max_evals=200)
+    shap_values = explainer(egg[np.newaxis, ...], max_evals=50)
 
     plt.close("all")
     shap.image_plot(shap_values, egg[np.newaxis, ...], show=False)
