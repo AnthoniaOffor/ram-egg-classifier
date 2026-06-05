@@ -153,4 +153,4 @@ with tab2:
             st.markdown(f"**🧑 You:** {text}")
         else:
             st.markdown(f"**🤖 IBIS:** {text}")
-``
+
