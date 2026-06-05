@@ -1,6 +1,7 @@
 import os
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
 import cv2
+import streamlit as st
 import numpy as np
 import torch
 import shap
@@ -59,8 +60,8 @@ def predict_and_explain(image):
     buf.seek(0)
     shap_image = Image.open(buf)
 
-    return species, f"{confidence:.2f}", shap_image
-    import streamlit as st
+    return species, f"{confidence * 100:.0f}%", shap_image
+
 
 st.title("Nest Best Thing (Explainable AI)")
 
