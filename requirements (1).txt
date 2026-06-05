@@ -1,7 +1,0 @@
-ultralytics
-torch
-opencv-python
-numpy
-shap
-matplotlib
-gradio
