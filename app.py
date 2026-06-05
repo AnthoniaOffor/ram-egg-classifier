@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import shap
 import matplotlib.pyplot as plt
-import gradio as gr
+
 import io
 from PIL import Image
 from ultralytics import YOLO
@@ -58,17 +58,24 @@ def predict_and_explain(image):
     shap_image = Image.open(buf)
 
     return species, f"{confidence:.2f}", shap_image
+    import streamlit as st
 
-demo = gr.Interface(
-    fn=predict_and_explain,
-    inputs=gr.Image(type="numpy", label="Upload Egg Image"),
-    outputs=[
-        gr.Text(label="Predicted Species"),
-        gr.Text(label="Confidence Score"),
-        gr.Image(label="SHAP Explanation"),
-    ],
-    title="Nest Best Thing (Explainable AI)",
-    description="Upload an egg image to predict the species and view a SHAP explanation."
-)
+st.title("Nest Best Thing (Explainable AI)")
 
-demo.launch()
+uploaded_file = st.file_uploader("Upload Egg Image", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
+    image = Image.open(uploaded_file).convert("RGB")
+    image_np = np.array(image)
+
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    species, confidence, shap_image = predict_and_explain(image_np)
+
+    st.write(f"**Predicted Species:** {species}")
+    st.write(f"**Confidence:** {confidence}")
+
+    if shap_image:
+        st.image(shap_image, caption="SHAP Explanation")
+
+
