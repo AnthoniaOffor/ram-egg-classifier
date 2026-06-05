@@ -1,0 +1,13 @@
+libgl1-mesa-glx
+
+# Stage the new packages.txt file
+!git add packages.txt
+
+# Commit the changes
+!git commit -m "Add packages.txt for libGL.so.1 dependency on Streamlit Cloud"
+
+# Push the changes to your GitHub repository using your PAT
+# Make sure to replace '<YOUR_PAT_HERE>' with your actual Personal Access Token if it's not already embedded in the URL
+!git push https://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@github.com/AnthoniaOffor/ram-egg-classifier.git main
+
+print("packages.txt added, committed, and pushed to GitHub. Please try redeploying your Streamlit app now.")
