@@ -1,3 +1,4 @@
+from rag_module import rag_chatbot
 import os
 os.environ["STREAMLIT_SERVER_FILE_WATCHER_TYPE"] = "none"
 import cv2
@@ -80,5 +81,14 @@ if uploaded_file is not None:
 
     if shap_image:
         st.image(shap_image, caption="SHAP Explanation")
+
+
+st.subheader("Test RAG (Debug)")
+
+query = st.text_input("Ask a question")
+
+if query:
+    answer = rag_chatbot(query)
+    st.write(answer)
 
 
