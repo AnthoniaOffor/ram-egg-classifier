@@ -147,7 +147,7 @@ def retrieve_context(query, top_k=3):
         ]
 
         for doc in general_docs:
-            if len(selected_docs) < top_k:
+            if len(selected_docs) > top_k:
                 selected_docs.append(doc)
 
         selected_scores = [1.0] + [0.5] * (len(selected_docs) - 1)
